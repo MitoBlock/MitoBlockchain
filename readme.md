@@ -1,7 +1,29 @@
-# mitoblockchain
-**mitoblockchain** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com).
+# Mito Block
 
-## Get started
+It is difficult for start-ups and small businesses to collaborate with each other to boost their sales / revenue / number of users and provide strong elements for user stickiness. Our application is a blockchain protocol that acts as an ecosystem for startups and small businesses to freely exchange value with each other with the help of Blockchain & Web3. 
+
+**Mito Block / Mito Blockchain** is a reliable, secure, and scalable PoA / PoS blockchain with WASM for smart contracts. It is built using Cosmos SDK and created with [Starport](https://starport.com).
+
+## Tech Stack of our application 
+
+| Component / Category                                             | Technology being used                  |
+| -------------                                                    |:-------------:                         | 
+| State machine / Application Layer of the blockchain              | Cosmos SDK                             | 
+| Consensus Engine / Consensus and Network Layer of the blockchain | Tendermint Core                        |
+| Smart contract Functionality (WASM)                              | CosmWasm                               |
+| CLI Tool for creating and managing the blockchain                | Starport                               |
+| Interoperability                                                 | IBC & Peg-zones                        |
+| RPC Framework                                                    | gRPC                                   |
+| Languages                                                        | JavaScript, TypeScript, Go, C and Rust |
+
+## Expected performance of our application
+
+| Category           | Expected Value    |
+| -------------      |:-------------:    | 
+| Block time         | <8 sec            | 
+| Throughput         | >1000 tps         |
+
+## Get started with the application
 
 ```
 starport chain serve
