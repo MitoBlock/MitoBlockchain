@@ -39,6 +39,31 @@ func (k Keeper) SetDiscountTokenCount(ctx sdk.Context, count uint64) {
     bz := make([]byte, 8)
     binary.BigEndian.PutUint64(bz, count)
 
-    // Set the value of Post/count/ to count
+    // Set the value of DiscountToken/count/ to count
     store.Set(byteKey, bz)
+}
+
+func (k Keeper) AppendDiscountToken(ctx sdk.Context, discountToken types.DiscountToken) uint64 {
+    // Get the current number of discount tokens in the store
+    count := k.GetDiscountTokenCount(ctx)
+
+    // Assign an ID to the discount token based on the number of discount tokens in the store
+    discountToken.Id = count
+
+    // Get the store
+    store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.DiscountTokenKey))
+
+    // Convert the discount token ID into bytes
+    byteKey := make([]byte, 8)
+    binary.BigEndian.PutUint64(byteKey, discountToken.Id)
+
+    // Marshal the discount token into bytes
+    appendedValue := k.cdc.MustMarshal(&discountToken)
+
+    // Insert the discount token bytes using discount token ID as a key
+    store.Set(byteKey, appendedValue)
+
+    // Update the discount token count
+    k.SetDiscountTokenCount(ctx, count+1)
+    return count
 }
