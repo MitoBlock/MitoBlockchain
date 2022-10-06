@@ -6,7 +6,7 @@ import (
     "github.com/cosmos/cosmos-sdk/store/prefix"
     sdk "github.com/cosmos/cosmos-sdk/types"
 
-    "mitoblockchain/x/mitoblockchain/types"
+    "github.com/mitoblock/mitoblockchain/x/mitoblockchain/types"
 )
 
 func (k Keeper) GetDiscountTokenCount(ctx sdk.Context) uint64 {
