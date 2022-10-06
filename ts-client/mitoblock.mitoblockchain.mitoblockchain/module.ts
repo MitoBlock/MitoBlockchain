@@ -7,10 +7,21 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgCreateDiscountToken } from "./types/mitoblockchain/tx";
 
 
-export {  };
+export { MsgCreateDiscountToken };
 
+type sendMsgCreateDiscountTokenParams = {
+  value: MsgCreateDiscountToken,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgCreateDiscountTokenParams = {
+  value: MsgCreateDiscountToken,
+};
 
 
 export const registry = new Registry(msgTypes);
@@ -30,6 +41,28 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgCreateDiscountToken({ value, fee, memo }: sendMsgCreateDiscountTokenParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateDiscountToken: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateDiscountToken({ value: MsgCreateDiscountToken.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateDiscountToken: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		msgCreateDiscountToken({ value }: msgCreateDiscountTokenParams): EncodeObject {
+			try {
+				return { typeUrl: "/mitoblock.mitoblockchain.mitoblockchain.MsgCreateDiscountToken", value: MsgCreateDiscountToken.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateDiscountToken: Could not create message: ' + e.message)
+			}
+		},
 		
 	}
 };

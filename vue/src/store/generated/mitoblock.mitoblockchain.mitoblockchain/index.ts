@@ -1,9 +1,10 @@
 import { Client, registry, MissingWalletError } from 'mitoblock-mitoblockchain-client-ts'
 
+import { DiscountToken } from "mitoblock-mitoblockchain-client-ts/mitoblock.mitoblockchain.mitoblockchain/types"
 import { Params } from "mitoblock-mitoblockchain-client-ts/mitoblock.mitoblockchain.mitoblockchain/types"
 
 
-export { Params };
+export { DiscountToken, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -37,6 +38,7 @@ const getDefaultState = () => {
 				Params: {},
 				
 				_Structure: {
+						DiscountToken: getStructure(DiscountToken.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},

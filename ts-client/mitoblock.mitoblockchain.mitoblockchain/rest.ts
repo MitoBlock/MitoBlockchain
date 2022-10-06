@@ -9,6 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+export interface MitoblockchainMsgCreateDiscountTokenResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
@@ -225,7 +230,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title mitoblockchain/genesis.proto
+ * @title mitoblockchain/discount_token.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
