@@ -15,14 +15,14 @@ func (k msgServer) CreateDiscountToken(goCtx context.Context,  msg *types.MsgCre
      // Create variable of type DiscountToken
 	 var discountToken = types.DiscountToken{
         Creator: msg.Creator,
-		Timestamp: msg.timestamp,
-		ActivityName: msg.activityName,
-		Score: msg.score,
-		Message: msg.message,
-		DiscountValue: msg.discountValue,
-		eligibleCompanies: msg.eligibleCompanies
-		ItemType: msg.itemType,
-		ExpiryDate: msg.expiryDate
+		Timestamp: msg.Timestamp,
+		ActivityName: msg.ActivityName,
+		Score: msg.Score,
+		Message: msg.Message,
+		DiscountValue: msg.DiscountValue,
+		EligibleCompanies: msg.EligibleCompanies,
+		ItemType: msg.ItemType,
+		ExpiryDate: msg.ExpiryDate,
     }
 
 	// Add a discount token to the store and get back the ID
