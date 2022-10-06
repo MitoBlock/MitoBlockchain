@@ -47035,6 +47035,12 @@ definitions:
     description: >-
       QueryAppVersionResponse is the response type for the Query/AppVersion RPC
       method.
+  mitoblock.mitoblockchain.mitoblockchain.MsgCreateDiscountTokenResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   mitoblock.mitoblockchain.mitoblockchain.Params:
     type: object
     description: Params defines the parameters for the module.
