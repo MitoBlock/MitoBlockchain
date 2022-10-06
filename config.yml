@@ -9,8 +9,13 @@ validator:
 client:
   openapi:
     path: "docs/static/openapi.yml"
-  vuex:
-    path: "vue/src/store"
+  # To generate ts-client 
+  # typescript:
+  #   path: "ts-client"
+  # 
+  # To generate vue files
+  # vuex:
+  #   path: "vue/src/store"
 faucet:
   name: bob
   coins: ["5token", "100000stake", "100000mitocell"]
