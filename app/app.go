@@ -92,6 +92,18 @@ import (
 
 	"github.com/mitoblock/mitoblockchain/docs"
 
+	
+	//WASMKEEPER & WASMCLIENT
+	"github.com/mitoblock/mitoblockchain/x/wasm"
+	wasmclient "github.com/mitoblock/mitoblockchain/x/mitoblockchain/client"
+	wasmkeeper "github.com/mitoblock/mitoblockchain/x/mitoblockchain/keeper"
+
+	// "github.com/mitoblock/mitoblockchain/x/wasm"
+	// wasmclient "github.com/mitoblock/mitoblockchain/x/wasm/client"
+	// wasmkeeper "github.com/mitoblock/mitoblockchain/x/wasm/keeper"
+
+	
+
 	mitoblockchainmodule "github.com/mitoblock/mitoblockchain/x/mitoblockchain"
 	mitoblockchainmodulekeeper "github.com/mitoblock/mitoblockchain/x/mitoblockchain/keeper"
 	mitoblockchainmoduletypes "github.com/mitoblock/mitoblockchain/x/mitoblockchain/types"
@@ -104,6 +116,8 @@ const (
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
+
+
 
 func getGovProposalHandlers() []govclient.ProposalHandler {
 	var govProposalHandlers []govclient.ProposalHandler
@@ -137,7 +151,12 @@ var (
 		staking.AppModuleBasic{},
 		mint.AppModuleBasic{},
 		distr.AppModuleBasic{},
-		gov.NewAppModuleBasic(getGovProposalHandlers()...),
+		//gov.NewAppModuleBasic(getGovProposalHandlers()...),
+		gov.NewAppModuleBasic(
+			append(
+					wasmclient.ProposalHandler, //ADDED
+			)...,
+		),
 		params.AppModuleBasic{},
 		crisis.AppModuleBasic{},
 		slashing.AppModuleBasic{},
@@ -148,6 +167,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		mitoblockchainmodule.AppModuleBasic{},
+		wasm.AppModuleBasic{}, //ADDED
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -160,6 +180,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		wasm.ModuleName:                {authtypes.Burner}, //ADDED
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -212,10 +233,12 @@ type App struct {
 	EvidenceKeeper   evidencekeeper.Keeper
 	TransferKeeper   ibctransferkeeper.Keeper
 	FeeGrantKeeper   feegrantkeeper.Keeper
+	wasmkeeper 		 wasm.keeper //ADDED
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
+	scopedWasmKeeper 	 capabilitykeeper.ScopedKeeper //ADDED
 
 	MitoblockchainKeeper mitoblockchainmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
@@ -239,6 +262,8 @@ func New(
 	encodingConfig cosmoscmd.EncodingConfig,
 	appOpts servertypes.AppOptions,
 	baseAppOptions ...func(*baseapp.BaseApp),
+	wasmOpts []wasm.Option, //ADDED
+	enabledProposals []wasm.ProposalType, //ADDED
 ) cosmoscmd.App {
 	appCodec := encodingConfig.Marshaler
 	cdc := encodingConfig.Amino
@@ -254,7 +279,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		mitoblockchainmoduletypes.StoreKey,
+		mitoblockchainmoduletypes.StoreKey, wasm.StoreKey, //ADDED
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
