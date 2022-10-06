@@ -22,7 +22,7 @@ func (k msgServer) CreateDiscountToken(goCtx context.Context,  msg *types.MsgCre
 		DiscountValue: msg.discountValue,
 		eligibleCompanies: msg.eligibleCompanies
 		ItemType: msg.itemType,
-		ExpiryDate: msg.expiryDate
+		ExpiryDate: msg.expiryDate,
     }
 
 	// Add a discount token to the store and get back the ID
