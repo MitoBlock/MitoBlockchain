@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "mitoblockchain/params.proto";
 // this line is used by starport scaffolding # 1
+import "mitoblockchain/discount_token.proto";
 
 option go_package = "github.com/mitoblock/mitoblockchain/x/mitoblockchain/types";
 
@@ -15,7 +16,12 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/mitoblock/mitoblockchain/mitoblockchain/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a list of DiscountTokens items.
+	rpc DiscountTokens(QueryDiscountTokensRequest) returns (QueryDiscountTokensResponse) {
+		option (google.api.http).get = "/mitoblock/mitoblockchain/mitoblockchain/discount_tokens";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +31,29 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryDiscountTokensRequest {
+  // Adding pagination to request
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryDiscountTokensResponse {
+  string creator = 1;
+  string timestamp = 2;
+  string activityName = 3;
+  string score = 4;
+  string message = 5;
+  string discountValue = 6;
+  string eligibleCompanies = 7;
+  string itemType = 8;
+  string expiryDate = 9;
+
+   // Returning a list of discount tokens
+  repeated DiscountToken DiscountToken = 10;
+
+  // Adding pagination to response
+  cosmos.base.query.v1beta1.PageResponse pagination = 11;
 }
 
 // this line is used by starport scaffolding # 3
