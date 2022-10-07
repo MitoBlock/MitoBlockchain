@@ -3,11 +3,11 @@ package simulation
 import (
 	"math/rand"
 
-	"github.com/mitoblock/mitoblockchain/x/mitoblockchain/keeper"
-	"github.com/mitoblock/mitoblockchain/x/mitoblockchain/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/mitoblock/mitoblockchain/x/mitoblockchain/keeper"
+	"github.com/mitoblock/mitoblockchain/x/mitoblockchain/types"
 )
 
 func SimulateMsgCreateDiscountToken(

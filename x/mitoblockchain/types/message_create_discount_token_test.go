@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/stretchr/testify/require"
 	"github.com/mitoblock/mitoblockchain/testutil/sample"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgCreateDiscountToken_ValidateBasic(t *testing.T) {
