@@ -17,8 +17,8 @@ const (
 	MemStoreKey = "mem_mitoblockchain"
 
 	// Keep track of the index of discount tokens
-	DiscountTokenKey      = "DiscountToken/value/"
-	DiscountTokenCountKey = "DiscountToken/count/"
+    DiscountTokenKey      = "DiscountToken/value/"
+    DiscountTokenCountKey = "DiscountToken/count/"
 )
 
 func KeyPrefix(p string) []byte {

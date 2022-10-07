@@ -24,7 +24,7 @@ var (
 )
 
 const (
-	opWeightMsgCreateDiscountToken = "op_weight_msg_create_discount_token"
+opWeightMsgCreateDiscountToken = "op_weight_msg_create_discount_token"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateDiscountToken int = 100
 
