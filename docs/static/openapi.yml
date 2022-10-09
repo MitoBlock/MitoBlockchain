@@ -27697,24 +27697,6 @@ paths:
           schema:
             type: object
             properties:
-              creator:
-                type: string
-              timestamp:
-                type: string
-              activityName:
-                type: string
-              score:
-                type: string
-              message:
-                type: string
-              discountValue:
-                type: string
-              eligibleCompanies:
-                type: string
-              itemType:
-                type: string
-              expiryDate:
-                type: string
               DiscountToken:
                 type: array
                 items:
@@ -47221,24 +47203,6 @@ definitions:
   mitoblock.mitoblockchain.mitoblockchain.QueryDiscountTokensResponse:
     type: object
     properties:
-      creator:
-        type: string
-      timestamp:
-        type: string
-      activityName:
-        type: string
-      score:
-        type: string
-      message:
-        type: string
-      discountValue:
-        type: string
-      eligibleCompanies:
-        type: string
-      itemType:
-        type: string
-      expiryDate:
-        type: string
       DiscountToken:
         type: array
         items:
