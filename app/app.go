@@ -204,7 +204,7 @@ var (
 	}
 )
 
-// These constants are derived from the above variables.
+// These constants are derived from the above variables - Bech32Prefix
 // These are the ones we will want to use in the code, based on
 // any overrides above
 var (
