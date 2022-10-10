@@ -94,13 +94,14 @@ import (
 
 	
 	//WASMKEEPER & WASMCLIENT
-	"github.com/mitoblock/mitoblockchain/x/wasm"
-	wasmclient "github.com/mitoblock/mitoblockchain/x/mitoblockchain/client"
-	wasmkeeper "github.com/mitoblock/mitoblockchain/x/mitoblockchain/keeper"
-
 	// "github.com/mitoblock/mitoblockchain/x/wasm"
-	// wasmclient "github.com/mitoblock/mitoblockchain/x/wasm/client"
-	// wasmkeeper "github.com/mitoblock/mitoblockchain/x/wasm/keeper"
+	// wasmclient "github.com/mitoblock/mitoblockchain/x/mitoblockchain/client"
+	// wasmkeeper "github.com/mitoblock/mitoblockchain/x/mitoblockchain/keeper"
+
+	
+	"github.com/mitoblock/mitoblockchain/x/wasm"
+	wasmclient "github.com/mitoblock/mitoblockchain/x/wasm/client"
+	wasmkeeper "github.com/mitoblock/mitoblockchain/x/wasm/keeper"
 
 	
 
@@ -624,6 +625,7 @@ func New(
 
 	app.ScopedIBCKeeper = scopedIBCKeeper
 	app.ScopedTransferKeeper = scopedTransferKeeper
+	app.ScopedWasmKeeper = scopedWasmKeeper //ADDED
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
 	return app
@@ -775,6 +777,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(mitoblockchainmoduletypes.ModuleName)
+	paramsKeeper.Subspace(wasm.ModuleName) //ADDED
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
