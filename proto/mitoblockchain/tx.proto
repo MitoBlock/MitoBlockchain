@@ -7,7 +7,23 @@ option go_package = "github.com/mitoblock/mitoblockchain/x/mitoblockchain/types"
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc CreateMembershipToken(MsgCreateMembershipToken) returns (MsgCreateMembershipTokenResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateMembershipToken {
+  string creator = 1;
+  string timestamp = 2;
+  string activityName = 3;
+  string score = 4;
+  string message = 5;
+  string membershipDuration = 6;
+  string eligibleCompanies = 7;
+  string expiryDate = 8;
+}
+
+message MsgCreateMembershipTokenResponse {
+  uint64 id = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
