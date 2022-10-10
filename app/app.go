@@ -278,7 +278,7 @@ type App struct {
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
-	scopedWasmKeeper 	 capabilitykeeper.ScopedKeeper //ADDED
+	ScopedWasmKeeper 	 capabilitykeeper.ScopedKeeper //ADDED
 
 	MitoblockchainKeeper mitoblockchainmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
@@ -349,6 +349,8 @@ func New(
 	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/scopedKeeper
 
+	ScopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasm.ModuleName) //ADDED
+
 	// add keepers
 	app.AccountKeeper = authkeeper.NewAccountKeeper(
 		appCodec, keys[authtypes.StoreKey], app.GetSubspace(authtypes.ModuleName), authtypes.ProtoBaseAccount, maccPerms,
@@ -418,6 +420,34 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
+	wasmDir := filepath.Join(homePath, "wasm")
+	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
+	if err != nil{
+		panic(fmt.Sprintf("Error while reading wasm config: %s", err))
+	}
+
+	// if we want to allow any custom callbacks
+	availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1"
+	app.WasmKeeper = wasm.NewKeeper(
+		appCodec,
+		keys[wasm.StoreKey],
+		app.getSubspace(wasm.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.StakingKeeper,
+		app.DistrKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedWasmKeeper,
+		app.TransferKeeper,
+		app.MsgServiceRouter(),
+		app.GRPCQueryRouter(), 
+		wasmDir,
+		wasmConfig,
+		availableCapabilities,
+		wasmOpts...,
+	) //ADDED
+
 	app.MitoblockchainKeeper = *mitoblockchainmodulekeeper.NewKeeper(
 		appCodec,
 		keys[mitoblockchainmoduletypes.StoreKey],
@@ -430,7 +460,15 @@ func New(
 
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
-	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
+
+	//ADDED
+	if len(enabledProposals) != 0 {
+		govRouter.AddRoute(wasm.RouterKey, wasm.NewWasmProposalHandler(app.WasmKeeper, enabledProposals)) //ProposalHandler defined in x/wasm/keeper/proposal_handler.go
+	}
+
+	ibcRouter.
+			AddRoute(ibctransfertypes.ModuleName, transferModule).
+			AddRoute(wasm.ModuleName, wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper)) //ADDED
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -463,6 +501,7 @@ func New(
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
+		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper) //ADDED
 		transferModule,
 		mitoblockchainModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
