@@ -501,7 +501,7 @@ func New(
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
-		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper) //ADDED
+		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper), //ADDED
 		transferModule,
 		mitoblockchainModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
@@ -515,6 +515,7 @@ func New(
 		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, distrtypes.ModuleName, slashingtypes.ModuleName,
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
 		feegrant.ModuleName,
+		wasm.ModuleName, //ADDED
 	)
 
 	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName)
@@ -524,6 +525,8 @@ func New(
 	// NOTE: Capability module must occur first so that it can initialize any capabilities
 	// so that other modules that want to create or claim capabilities afterwards in InitChain
 	// can do so safely.
+	// NOTE: wasm module should be at the end as it can call other module functionality direct or via message dispatching during
+	// genesis phase. For example bank transfer, auth account check, staking, ...
 	app.mm.SetOrderInitGenesis(
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
@@ -539,6 +542,8 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		mitoblockchainmoduletypes.ModuleName,
+		//wasm after ibc transfer
+		wasm.ModuleName, //ADDED
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -562,6 +567,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		mitoblockchainModule,
+		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper), //ADDED
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -575,15 +581,34 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 
+	//ORIGINAL BLOCK BELOW
+	// anteHandler, err := ante.NewAnteHandler(
+	// 	ante.HandlerOptions{
+	// 		AccountKeeper:   app.AccountKeeper,
+	// 		BankKeeper:      app.BankKeeper,
+	// 		SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
+	// 		FeegrantKeeper:  app.FeeGrantKeeper,
+	// 		SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+	// 	},
+	// )
+
+	//NEW
 	anteHandler, err := ante.NewAnteHandler(
-		ante.HandlerOptions{
-			AccountKeeper:   app.AccountKeeper,
-			BankKeeper:      app.BankKeeper,
-			SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
-			FeegrantKeeper:  app.FeeGrantKeeper,
-			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+		HandlerOptions{
+			HandlerOptions: ante.HandlerOptions{
+				AccountKeeper:   app.AccountKeeper,
+				BankKeeper:      app.BankKeeper,
+				SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
+				FeegrantKeeper:  app.FeeGrantKeeper,
+				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,	
+			},
+			WasmConfig:        &wasmConfig,
 		},
-	)
+		
+	) //ADDED
+
+
+
 	if err != nil {
 		panic(err)
 	}
