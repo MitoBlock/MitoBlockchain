@@ -15,6 +15,10 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_mitoblockchain"
+
+	// Keep track of the index of membership tokens
+	MembershipTokenKey      = "MembershipToken/value/"
+	MembershipTokenCountKey = "MembershipToken/count/"
 )
 
 func KeyPrefix(p string) []byte {
