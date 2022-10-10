@@ -117,6 +117,17 @@ const (
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
 
+//GetEnabledProposals parses the ProposalsEnabled / EnableSpecificProposals values to produce a list of enabled proposals to pass into wasmd app.
+//If ProposablesEnabled is set to true and EnableSpecificProposals is "" =, then enable the x/wasm proposals
+//If ProposablesEnabled is set to false and EnableSpecificProposals is "" =, then disable the x/wasm proposals
+func getEnabledProposals() []wasm.ProposalType{
+	if EnableSpecificProposals == "" {
+		if ProposablesEnabled == "true"{
+			return wasm.EnableAllProposals //EnableAllProposals contained in x/wasm/types/proposal.go
+		}
+		return wasm.DisableAllProposals
+	}
+}
 
 
 func getGovProposalHandlers() []govclient.ProposalHandler {
@@ -139,6 +150,11 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 var (
 	// DefaultNodeHome default home directories for the application daemon
 	DefaultNodeHome string
+
+	//If ProposablesEnabled is set to true and EnableSpecificProposals is "" =, then enable the x/wasm proposals
+	//If ProposablesEnabled is set to false and EnableSpecificProposals is "" =, then disable the x/wasm proposals
+	ProposalsEnabled = "false" //ADDED
+	EnableSpecificProposals = "" //ADDED
 
 	// ModuleBasics defines the module BasicManager is in charge of setting up basic,
 	// non-dependant module elements, such as codec registration
