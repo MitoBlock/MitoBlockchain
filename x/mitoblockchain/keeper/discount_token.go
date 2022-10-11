@@ -10,7 +10,7 @@ import (
 )
 
 func (k Keeper) GetDiscountTokenCount(ctx sdk.Context) uint64 {
-	// Get the store using storeKey (which is "discount token") and DiscountTokenCountKey (which is "DiscountToken/count/")
+	// Get the store using storeKey (which is "mitoblockchain") and DiscountTokenCountKey (which is "DiscountToken/count/")
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.DiscountTokenCountKey))
 
 	// Convert the DiscountTokenCountKey to bytes
@@ -29,7 +29,7 @@ func (k Keeper) GetDiscountTokenCount(ctx sdk.Context) uint64 {
 }
 
 func (k Keeper) SetDiscountTokenCount(ctx sdk.Context, count uint64) {
-	// Get the store using storeKey (which is "discount token") and DiscountTokenCountKey (which is "DiscountToken/count/")
+	// Get the store using storeKey (which is "mitoblockchain") and DiscountTokenCountKey (which is "DiscountToken/count/")
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.DiscountTokenCountKey))
 
 	// Convert the DiscountTokenCountKey to bytes
