@@ -103,6 +103,11 @@ import (
 	wasmclient "github.com/mitoblock/mitoblockchain/x/wasm/client"
 	wasmkeeper "github.com/mitoblock/mitoblockchain/x/wasm/keeper"
 
+	//"github.com/mitoBlock/mitoBlockchain/tree/feature/wasm-module/x/wasm"
+	//wasmclient "github.com/mitoBlock/mitoBlockchain/tree/feature/wasm-module/x/wasm/client"
+	//wasmkeeper "github.com/mitoBlock/mitoBlockchain/tree/feature/wasm-module/x/wasm/keeper"
+
+	
 	
 
 	mitoblockchainmodule "github.com/mitoblock/mitoblockchain/x/mitoblockchain"
@@ -121,13 +126,19 @@ const (
 //GetEnabledProposals parses the ProposalsEnabled / EnableSpecificProposals values to produce a list of enabled proposals to pass into wasmd app.
 //If ProposablesEnabled is set to true and EnableSpecificProposals is "" =, then enable the x/wasm proposals
 //If ProposablesEnabled is set to false and EnableSpecificProposals is "" =, then disable the x/wasm proposals
-func getEnabledProposals() []wasm.ProposalType{
+func GetEnabledProposals() []wasm.ProposalType {
 	if EnableSpecificProposals == "" {
-		if ProposablesEnabled == "true"{
+		if ProposalsEnabled == "true" {
 			return wasm.EnableAllProposals //EnableAllProposals contained in x/wasm/types/proposal.go
 		}
 		return wasm.DisableAllProposals
 	}
+	chunks := strings.Split(EnableSpecificProposals, ",")
+	proposals, err := wasm.ConvertToProposals(chunks)
+	if err != nil {
+		panic(err)
+	}
+	return proposals
 }
 
 
@@ -152,8 +163,8 @@ var (
 	// DefaultNodeHome default home directories for the application daemon
 	DefaultNodeHome string
 
-	NodeDir      = ".wasmd" //ADDED
-	Bech32Prefix = "wasm" //ADDED
+	NodeDir      = ".mitoblockchain" //ADDED
+	Bech32Prefix = "mitoblockchain" //ADDED
 
 	//If ProposablesEnabled is set to true and EnableSpecificProposals is "" =, then enable the x/wasm proposals
 	//If ProposablesEnabled is set to false and EnableSpecificProposals is "" =, then disable the x/wasm proposals
@@ -172,9 +183,15 @@ var (
 		mint.AppModuleBasic{},
 		distr.AppModuleBasic{},
 		//gov.NewAppModuleBasic(getGovProposalHandlers()...),
-		gov.NewAppModuleBasic(
+		gov.NewAppModuleBasic( //ADDED
 			append(
-					wasmclient.ProposalHandler, //ADDED
+				wasmclient.ProposalHandlers,
+				paramsclient.ProposalHandler,
+				distrclient.ProposalHandler,
+				upgradeclient.ProposalHandler,
+				upgradeclient.CancelProposalHandler,
+				ibcclientclient.UpdateClientProposalHandler,
+				ibcclientclient.UpgradeProposalHandler,
 			)...,
 		),
 		params.AppModuleBasic{},
@@ -274,7 +291,7 @@ type App struct {
 	EvidenceKeeper   evidencekeeper.Keeper
 	TransferKeeper   ibctransferkeeper.Keeper
 	FeeGrantKeeper   feegrantkeeper.Keeper
-	WasmKeeper 		 wasm.keeper //ADDED
+	WasmKeeper 		 wasm.Keeper //ADDED
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
@@ -302,9 +319,9 @@ func New(
 	invCheckPeriod uint,
 	encodingConfig cosmoscmd.EncodingConfig,
 	appOpts servertypes.AppOptions,
-	baseAppOptions ...func(*baseapp.BaseApp),
 	wasmOpts []wasm.Option, //ADDED
 	enabledProposals []wasm.ProposalType, //ADDED
+	baseAppOptions ...func(*baseapp.BaseApp),
 ) cosmoscmd.App {
 	appCodec := encodingConfig.Marshaler
 	cdc := encodingConfig.Amino
