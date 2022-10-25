@@ -24,7 +24,7 @@ var (
 )
 
 const (
-opWeightMsgCreateMembershipToken = "op_weight_msg_create_membership_token"
+	opWeightMsgCreateMembershipToken = "op_weight_msg_create_membership_token"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateMembershipToken int = 100
 

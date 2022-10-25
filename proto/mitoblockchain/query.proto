@@ -7,6 +7,8 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "mitoblockchain/params.proto";
 // this line is used by starport scaffolding # 1
 
+import "mitoblockchain/membership_token.proto";
+
 option go_package = "github.com/mitoblock/mitoblockchain/x/mitoblockchain/types";
 
 // Query defines the gRPC querier service.
@@ -15,7 +17,12 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/mitoblock/mitoblockchain/mitoblockchain/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a list of MembershipTokens items.
+	rpc MembershipTokens(QueryMembershipTokensRequest) returns (QueryMembershipTokensResponse) {
+		option (google.api.http).get = "/mitoblock/mitoblockchain/mitoblockchain/membership_tokens";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +32,19 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryMembershipTokensRequest {
+  // Adding pagination to request
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryMembershipTokensResponse {
+  // Returning a list of membership tokens
+  repeated MembershipToken MembershipToken = 1;
+
+  // Adding pagination to response
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
