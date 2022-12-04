@@ -1,10 +1,8 @@
-# Mito Blockchain dev
-
-**This is dev / experimental repo of original mitoblock.**
+# Mito Blockchain
 
 It is difficult for start-ups and small businesses to collaborate with each other to boost their sales / revenue / number of users and provide strong elements for user stickiness. Our application is a blockchain protocol that acts as an ecosystem for startups and small businesses to freely exchange value with each other with the help of Blockchain & Web3. 
 
-**Mito Block / Mito Blockchain dev** is a reliable, secure, and scalable PoA / PoS blockchain with WASM for smart contracts. It is built  using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
+**Mito Block** is a reliable, secure, and scalable PoA / PoS blockchain with WASM for smart contracts. It is built  using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
 
 ## Tech Stack of our application 
 
@@ -17,6 +15,9 @@ It is difficult for start-ups and small businesses to collaborate with each othe
 | Interoperability                                                 | IBC & Peg-zones                        |
 | RPC Framework                                                    | gRPC                                   |
 | Languages                                                        | JavaScript, TypeScript, Go, C and Rust |
+
+## Contributors
+Daljeet Singh (Lead), Kyro Clestino and Andrew Pereira (WASM)
 
 ## Get started
 
@@ -31,44 +32,41 @@ ignite chain serve
 
 `serve` command installs dependencies, builds, initializes, and starts your blockchain in development. The `-r` flag can be used to reset the state.
 
-### Configure
+## Common API endpoints 
 
-Your blockchain in development can be configured with `config.yml`. To learn more, see the [Ignite CLI docs](https://docs.ignite.com).
+#### GET HTTP method
 
-### Web Frontend
+* Get balance of an account (all coins) - http://0.0.0.0:1317/cosmos/bank/v1beta1/balances/{address}
+* Get balance of an account by denom (specific coin) - http://0.0.0.0:1317/cosmos/bank/v1beta1/balances/{address}/by_denom?denom={coin like mitocell}
+* Get supply of the coin - http://0.0.0.0:1317/cosmos/bank/v1beta1/supply/by_denom?denom={coin like mitocell}
+* Get discount token and its status using ID - http://0.0.0.0:1317/mitoblockchaindev/mitoblockchaindev/discount_token_status_q/{id}
+* Get all discount tokens - http://0.0.0.0:1317/mitoblockchaindev/mitoblockchaindev/discount_tokens
+Membership token endpoints are similar to discount token
 
-Ignite CLI has scaffolded a Vue.js-based web app in the `vue` directory. Run the following commands to install dependencies and start the app:
+#### POST HTTP method 
 
-```
-cd vue
-npm install
-npm run serve
-```
+You can use faucet to get some coins. Faucet is a service that gives free coins to users. faucet has limited coins or funds.
 
-The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
+**Send coins to your account using faucet - http://0.0.0.0:4500**
 
-## Release
-To release a new version of your blockchain, create and push a new tag with `v` prefix. A new draft release with the configured targets will be created.
+You will need to pass the address and coins in the body of the request.
 
-```
-git tag v0.1
-git push origin v0.1
-```
+Example of a body:
+{
+  "address": "mito1uzv4v9g9xln2qx2vtqhz99yxum33calja5vruz",
+  "coins": [
+    "10token"
+  ]
+}
 
-After a draft release is created, make your final changes from the release page and publish it.
+Parameter content type is application/json
+
+Other TXs like transfering coins from one account to another can only be done through CLI or client code. That's why we thought of creating a SDK using ts-client but current unstability failed the plan. In the end, we created the [go client for startup web apps using GIN](https://github.com/MitoBlock/go-client). Same strategy was used to create the [onboarding program web app](https://github.com/MitoBlock/onboarding-program-webapp/tree/main/backend) that broadcast tx to blockchain through client code (go func in GIN).
 
 ### Install
 To install the latest version of this blockchain node's binary, execute the following command on your machine:
 
 ```
-curl https://get.ignite.com/mitoblock/mitoblockchaindev@latest! | sudo bash
+curl https://get.ignite.com/mitoblock/mitoblockchain@latest! | sudo bash
 ```
-`mitoblock/mitoblockchaindev` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
-
-## Learn more about ignite here
-
-- [Ignite CLI](https://ignite.com/cli)
-- [Tutorials](https://docs.ignite.com/guide)
-- [Ignite CLI docs](https://docs.ignite.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.gg/ignite)
+`mitoblock/mitoblockchain` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
