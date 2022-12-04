@@ -63,7 +63,11 @@ Parameter content type is application/json
 
 Other TXs like transfering coins from one account to another can only be done through CLI or client code. That's why we thought of creating a SDK using ts-client but current unstability failed the plan. In the end, we created the [go client for startup web apps using GIN](https://github.com/MitoBlock/go-client). Same strategy was used to create the [onboarding program web app](https://github.com/MitoBlock/onboarding-program-webapp/tree/main/backend) that broadcast tx to blockchain through client code (go func in GIN).
 
-### Install
+## CLI 
+
+`mitoblockchaind` is the daemon name. Currently, there is no documentation for commands of blockchain. The best way to learn commands is `mitoblockchaind --help`. 
+
+## Install
 To install the latest version of this blockchain node's binary, execute the following command on your machine:
 
 ```
