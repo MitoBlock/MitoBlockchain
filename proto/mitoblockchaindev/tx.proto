@@ -1,0 +1,98 @@
+syntax = "proto3";
+package mitoblockchaindev.mitoblockchaindev;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "mitoblockchaindev/x/mitoblockchaindev/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc CreateDiscountToken(MsgCreateDiscountToken) returns (MsgCreateDiscountTokenResponse);
+  rpc CreateDiscountTokenStatus(MsgCreateDiscountTokenStatus) returns (MsgCreateDiscountTokenStatusResponse);
+  rpc DeleteDiscountTokenStatus(MsgDeleteDiscountTokenStatus) returns (MsgDeleteDiscountTokenStatusResponse);
+  rpc CreateMembershipToken(MsgCreateMembershipToken) returns (MsgCreateMembershipTokenResponse);
+  rpc CreateMembershipTokenStatus(MsgCreateMembershipTokenStatus) returns (MsgCreateMembershipTokenStatusResponse);
+  rpc DeleteMembershipTokenStatus(MsgDeleteMembershipTokenStatus) returns (MsgDeleteMembershipTokenStatusResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateDiscountToken {
+  string creator = 1;
+  string timestamp = 2;
+  string activityName = 3;
+  string score = 4;
+  string message = 5;
+  string discountValue = 6;
+  string eligibleCompanies = 7;
+  string itemType = 8;
+  string expiryDate = 9;
+  uint64 id = 10;
+}
+
+message MsgCreateDiscountTokenResponse {
+  uint64 id = 1;
+}
+
+message MsgCreateDiscountTokenStatus {
+  string creator = 1;
+  uint64 tokenID = 2;
+  string timestamp = 3;
+  string status = 4;
+  uint64 id = 5;
+}
+
+message MsgCreateDiscountTokenStatusResponse {
+  uint64 id = 1;
+}
+
+message MsgDeleteDiscountTokenStatus {
+  string creator = 1;
+  uint64 discountTokenStatusID = 2;
+  uint64 tokenID = 3;
+  uint64 id = 4;
+}
+
+message MsgDeleteDiscountTokenStatusResponse {
+  uint64 id = 1;
+}
+
+message MsgCreateMembershipToken {
+  string creator = 1;
+  string timestamp = 2;
+  string activityName = 3;
+  string score = 4;
+  string message = 5;
+  string membershipDuration = 6;
+  string eligibleCompanies = 7;
+  string expiryDate = 8;
+  uint64 id = 9;
+}
+
+message MsgCreateMembershipTokenResponse {
+  uint64 id = 1;
+}
+
+message MsgCreateMembershipTokenStatus {
+  string creator = 1;
+  uint64 tokenID = 2;
+  string timestamp = 3;
+  string status = 4;
+  uint64 id = 5;
+}
+
+message MsgCreateMembershipTokenStatusResponse {
+  uint64 id = 1;
+}
+
+message MsgDeleteMembershipTokenStatus {
+  string creator = 1;
+  uint64 membershipTokenStatusID = 2;
+  uint64 tokenID = 3;
+  uint64 id = 4;
+}
+
+message MsgDeleteMembershipTokenStatusResponse {
+  uint64 id = 1;
+}
+
+// this line is used by starport scaffolding # proto/tx/message
