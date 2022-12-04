@@ -1,0 +1,168 @@
+syntax = "proto3";
+package mitoblockchaindev.mitoblockchaindev;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "mitoblockchaindev/params.proto";
+import "mitoblockchaindev/discount_token_status.proto";
+import "mitoblockchaindev/membership_token_status.proto";
+// this line is used by starport scaffolding # 1
+import "mitoblockchaindev/discount_token.proto";
+import "mitoblockchaindev/membership_token.proto";
+
+option go_package = "mitoblockchaindev/x/mitoblockchaindev/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/params";
+  }
+  // Queries a list of DiscountTokens items.
+	rpc DiscountTokens(QueryDiscountTokensRequest) returns (QueryDiscountTokensResponse) {
+		option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/discount_tokens";
+	}
+
+// Queries a DiscountTokenStatus by id.
+	rpc DiscountTokenStatus(QueryGetDiscountTokenStatusRequest) returns (QueryGetDiscountTokenStatusResponse) {
+		option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/discount_token_status/{id}";
+	}
+
+	// Queries a list of DiscountTokenStatus items.
+	rpc DiscountTokenStatusAll(QueryAllDiscountTokenStatusRequest) returns (QueryAllDiscountTokenStatusResponse) {
+		option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/discount_token_status";
+	}
+
+// Queries a list of DiscountTokenStatusQ items.
+	rpc DiscountTokenStatusQ(QueryDiscountTokenStatusQRequest) returns (QueryDiscountTokenStatusQResponse) {
+		option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/discount_token_status_q/{id}";
+	}
+
+// Queries a list of MembershipTokens items.
+	rpc MembershipTokens(QueryMembershipTokensRequest) returns (QueryMembershipTokensResponse) {
+		option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/membership_tokens";
+	}
+
+// Queries a MembershipTokenStatus by id.
+	rpc MembershipTokenStatus(QueryGetMembershipTokenStatusRequest) returns (QueryGetMembershipTokenStatusResponse) {
+		option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/membership_token_status/{id}";
+	}
+
+	// Queries a list of MembershipTokenStatus items.
+	rpc MembershipTokenStatusAll(QueryAllMembershipTokenStatusRequest) returns (QueryAllMembershipTokenStatusResponse) {
+		option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/membership_token_status";
+	}
+
+// Queries a list of MembershipTokenStatusQ items.
+	rpc MembershipTokenStatusQ(QueryMembershipTokenStatusQRequest) returns (QueryMembershipTokenStatusQResponse) {
+		option (google.api.http).get = "/mitoblockchaindev/mitoblockchaindev/membership_token_status_q/{id}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryDiscountTokensRequest {
+  // Adding pagination to request
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryDiscountTokensResponse {
+   // Returning a list of discount tokens
+  repeated DiscountToken DiscountToken = 1;
+
+  // Adding pagination to response
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDiscountTokenStatusRequest {
+	uint64 id = 1;
+}
+
+message QueryGetDiscountTokenStatusResponse {
+	DiscountTokenStatus DiscountTokenStatus = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDiscountTokenStatusRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDiscountTokenStatusResponse {
+	repeated DiscountTokenStatus DiscountTokenStatus = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryDiscountTokenStatusQRequest {
+  uint64 id = 1;
+
+  // Adding pagination to request
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryDiscountTokenStatusQResponse {
+  DiscountToken DiscountToken = 1;
+
+  // Returning a list of discount token status
+  repeated DiscountTokenStatus DiscountTokenStatus = 2;
+
+  // Adding pagination to response
+  cosmos.base.query.v1beta1.PageResponse pagination = 3;
+}
+
+message QueryMembershipTokensRequest {
+  // Adding pagination to request
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryMembershipTokensResponse {
+  // Returning a list of posts
+  repeated MembershipToken MembershipToken = 1;
+
+  // Adding pagination to response
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetMembershipTokenStatusRequest {
+	uint64 id = 1;
+}
+
+message QueryGetMembershipTokenStatusResponse {
+	MembershipTokenStatus MembershipTokenStatus = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllMembershipTokenStatusRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllMembershipTokenStatusResponse {
+	repeated MembershipTokenStatus MembershipTokenStatus = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryMembershipTokenStatusQRequest {
+  uint64 id = 1;
+
+  // Adding pagination to request
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryMembershipTokenStatusQResponse {
+  MembershipToken MembershipToken = 1;
+
+  // Returning a list of membership token status
+  repeated MembershipTokenStatus MembershipTokenStatus = 2;
+
+  // Adding pagination to response
+  cosmos.base.query.v1beta1.PageResponse pagination = 3;
+}
+
+// this line is used by starport scaffolding # 3

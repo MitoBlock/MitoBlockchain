@@ -1,0 +1,20 @@
+syntax = "proto3";
+package mitoblockchaindev.mitoblockchaindev;
+
+import "gogoproto/gogo.proto";
+import "mitoblockchaindev/params.proto";
+import "mitoblockchaindev/discount_token_status.proto";
+import "mitoblockchaindev/membership_token_status.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "mitoblockchaindev/x/mitoblockchaindev/types";
+
+// GenesisState defines the mitoblockchaindev module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  repeated DiscountTokenStatus discountTokenStatusList = 2 [(gogoproto.nullable) = false];
+  uint64 discountTokenStatusCount = 3;
+  repeated MembershipTokenStatus membershipTokenStatusList = 4 [(gogoproto.nullable) = false];
+  uint64 membershipTokenStatusCount = 5;
+  // this line is used by starport scaffolding # genesis/proto/state
+}

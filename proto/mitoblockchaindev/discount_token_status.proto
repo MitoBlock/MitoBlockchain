@@ -1,0 +1,13 @@
+syntax = "proto3";
+package mitoblockchaindev.mitoblockchaindev;
+
+option go_package = "mitoblockchaindev/x/mitoblockchaindev/types";
+
+message DiscountTokenStatus {
+  uint64 id = 1;
+  string creator = 2; 
+  string timestamp = 3; 
+  string status = 4; 
+  uint64 tokenID = 5; 
+  int64 createdAt = 6; 
+}

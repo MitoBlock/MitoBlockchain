@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package mitoblockchaindev.mitoblockchaindev;
+
+option go_package = "mitoblockchaindev/x/mitoblockchaindev/types";
+
+message MembershipToken {
+  string creator = 1;
+  uint64 id = 2;
+  string timestamp = 3;
+  string activityName = 4;
+  string score = 5;
+  string message = 6;
+  string membershipDuration = 7;
+  string eligibleCompanies = 8;
+  string expiryDate = 9;
+  int64  createdAt = 10;
+}
